@@ -1,14 +1,14 @@
-﻿using Polly;
+﻿using EzSpecflow.Abstractions;
+using EzSpecflow.Exceptions;
+using Polly;
 using Polly.Contrib.WaitAndRetry;
 using Polly.Retry;
-using StepStack.Abstractions;
-using StepStack.Exceptions;
 
-namespace StepStack.Samples;
+namespace EzSpecflow;
 
 public class SampleRetryPolicyFactory : IRetryPolicyFactory
 {
-    public AsyncRetryPolicy BuildStepPolicy() =>
+    public AsyncRetryPolicy BuildStepPolicy() => 
         Policy
             .Handle<StepRetryNeededException>()
             .WaitAndRetryAsync(Backoff.DecorrelatedJitterBackoffV2(
@@ -16,19 +16,7 @@ public class SampleRetryPolicyFactory : IRetryPolicyFactory
                 retryCount: 5,
                 fastFirst: true));
 
-    public AsyncRetryPolicy BuildStackPolicy() =>
-        Policy
-            .Handle<StackRetryNeededException>()
-            .WaitAndRetryAsync(Backoff.DecorrelatedJitterBackoffV2(
-                medianFirstRetryDelay: TimeSpan.FromSeconds(1),
-                retryCount: 5,
-                fastFirst: true));
+    public AsyncRetryPolicy BuildStackPolicy() => BuildStepPolicy();
 
-    public AsyncRetryPolicy BuildFramePolicy() =>
-        Policy
-            .Handle<FrameRetryNeededException>()
-            .WaitAndRetryAsync(Backoff.DecorrelatedJitterBackoffV2(
-                medianFirstRetryDelay: TimeSpan.FromSeconds(1),
-                retryCount: 5,
-                fastFirst: true));
+    public AsyncRetryPolicy BuildFramePolicy() => BuildStepPolicy();
 }

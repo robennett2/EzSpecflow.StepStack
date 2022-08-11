@@ -1,8 +1,8 @@
 ﻿using BoDi;
-using StepStack.Extensions;
+using EzSpecflow.Extensions;
 using TechTalk.SpecFlow;
 
-namespace StepStack.Samples;
+namespace EzSpecflow;
 
 [Binding]
 public sealed class Hooks

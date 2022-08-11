@@ -5,6 +5,7 @@
         <LangVersion>10</LangVersion>
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <RootNamespace>EzSpecflow</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

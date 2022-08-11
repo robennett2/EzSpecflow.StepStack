@@ -1,6 +1,6 @@
 ﻿using Polly.Retry;
 
-namespace StepStack.Abstractions;
+namespace EzSpecflow.Abstractions;
 
 public interface IRetryPolicyFactory
 {

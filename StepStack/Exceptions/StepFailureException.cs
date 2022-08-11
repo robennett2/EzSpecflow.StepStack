@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StepStack.Exceptions;
+namespace EzSpecflow.Exceptions;
 
 public class StepFailureException : Exception
 {

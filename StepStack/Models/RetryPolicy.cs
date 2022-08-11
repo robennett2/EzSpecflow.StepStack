@@ -1,4 +1,4 @@
-﻿namespace StepStack.Models;
+﻿namespace EzSpecflow.Models;
 
 public enum RetryPolicy
 {

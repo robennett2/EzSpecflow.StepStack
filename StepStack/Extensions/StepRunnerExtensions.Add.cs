@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using StepStack.Abstractions;
-using StepStack.Models;
+using EzSpecflow.Abstractions;
+using EzSpecflow.Models;
 
-namespace StepStack.Extensions;
+namespace EzSpecflow.Extensions;
 
 public static partial class StepRunnerExtensions
 {

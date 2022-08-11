@@ -1,7 +1,7 @@
 ﻿using BoDi;
-using StepStack.Abstractions;
+using EzSpecflow.Abstractions;
 
-namespace StepStack.Extensions;
+namespace EzSpecflow.Extensions;
 
 public static class ObjectCollectionExtensions
 {

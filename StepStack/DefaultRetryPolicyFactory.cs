@@ -1,11 +1,11 @@
 ﻿using System;
+using EzSpecflow.Abstractions;
+using EzSpecflow.Exceptions;
 using Polly;
 using Polly.Contrib.WaitAndRetry;
 using Polly.Retry;
-using StepStack.Abstractions;
-using StepStack.Exceptions;
 
-namespace StepStack;
+namespace EzSpecflow;
 
 internal sealed class DefaultRetryPolicyFactory : IRetryPolicyFactory
 {

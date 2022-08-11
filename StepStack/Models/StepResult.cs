@@ -1,7 +1,7 @@
 ﻿using System;
-using StepStack.Abstractions;
+using EzSpecflow.Abstractions;
 
-namespace StepStack.Models;
+namespace EzSpecflow.Models;
 
 public record StepResult(
     IStep Step,

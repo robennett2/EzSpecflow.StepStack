@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
+﻿using System.Diagnostics;
+using EzSpecflow.Abstractions;
+using EzSpecflow.Extensions;
+using EzSpecflow.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StepStack.Abstractions;
-using StepStack.Extensions;
-using StepStack.Models;
 using TechTalk.SpecFlow;
 
-namespace StepStack.Samples.Steps;
+namespace EzSpecflow.Steps;
 
 [Binding]
 public sealed class StackSampleSteps

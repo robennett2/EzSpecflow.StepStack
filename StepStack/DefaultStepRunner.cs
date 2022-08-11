@@ -4,12 +4,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BoDi;
+using EzSpecflow.Abstractions;
+using EzSpecflow.Exceptions;
+using EzSpecflow.Models;
 using Microsoft.Extensions.Logging;
-using StepStack.Abstractions;
-using StepStack.Exceptions;
-using StepStack.Models;
 
-namespace StepStack;
+namespace EzSpecflow;
 
 internal sealed class DefaultStepRunner : IStepRunner
 {

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using StepStack.Models;
+using EzSpecflow.Models;
 
-namespace StepStack.Abstractions;
+namespace EzSpecflow.Abstractions;
 
 public interface IStep
 {
