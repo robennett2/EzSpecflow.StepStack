@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StepStack", "StepStack\StepStack.csproj", "{47506443-1828-4042-9B0F-47D4E54BD17D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StepStack.Samples", "StepStack.Samples\StepStack.Samples.csproj", "{3667C122-69E9-4BF0-9F39-877B57496A63}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{47506443-1828-4042-9B0F-47D4E54BD17D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47506443-1828-4042-9B0F-47D4E54BD17D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47506443-1828-4042-9B0F-47D4E54BD17D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47506443-1828-4042-9B0F-47D4E54BD17D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3667C122-69E9-4BF0-9F39-877B57496A63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3667C122-69E9-4BF0-9F39-877B57496A63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3667C122-69E9-4BF0-9F39-877B57496A63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3667C122-69E9-4BF0-9F39-877B57496A63}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
