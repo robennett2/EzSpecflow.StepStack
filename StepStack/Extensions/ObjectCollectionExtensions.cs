@@ -9,7 +9,10 @@ public static class ObjectCollectionExtensions
         where TStepRunner : class, IStepRunner =>
         objectContainer.RegisterTypeAs<TStepRunner, IStepRunner>();
     
-    public static IStrategyRegistration RegisterRetryPolicyFactory<TRetryPolicyFactory>(this IObjectContainer objectContainer)
+    public static IStrategyRegistration RegisterRetryPolicyFactory<TRetryPolicyFactory>(this IObjectContainer objectContainer, string name)
         where TRetryPolicyFactory : class, IRetryPolicyFactory =>
-        objectContainer.RegisterTypeAs<TRetryPolicyFactory, IRetryPolicyFactory>();
+        objectContainer.RegisterTypeAs<TRetryPolicyFactory, IRetryPolicyFactory>(name.ToLower());
+    
+    public static IRetryPolicyFactory ResolveRetryPolicyFactory(this IObjectContainer objectContainer, string name = "default") =>
+        objectContainer.Resolve<IRetryPolicyFactory>(name.ToLower());
 }

@@ -1,4 +1,5 @@
 ﻿using BoDi;
+using EzSpecflow.Abstractions;
 using EzSpecflow.Extensions;
 using TechTalk.SpecFlow;
 
@@ -17,7 +18,8 @@ public sealed class Hooks
     [BeforeScenario(Order = 1)]
     public void BeforeScenario()
     {
+        _objectContainer.RegisterTypeAs<RetryPolicyFactoryResolver, IRetryPolicyFactoryResolver>();
         _objectContainer.RegisterStepRunner<DefaultStepRunner>();
-        _objectContainer.RegisterRetryPolicyFactory<DefaultRetryPolicyFactory>();
+        _objectContainer.RegisterRetryPolicyFactory<DefaultRetryPolicyFactory>("default");
     }
 }

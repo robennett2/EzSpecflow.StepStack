@@ -96,7 +96,7 @@ public sealed class StackSampleSteps
             () => Task.Run(() =>
             {
                 int value = _scenarioContext.Get<int>(CurrentValueKey);
-                Debug.WriteLine($"Then I throw if {value} less than {ceiling} without retry");
+                Debug.WriteLine($"Then I throw if {value} less than {ceiling} with stack retry");
                 if (value < ceiling)
                 {
                     throw new InvalidOperationException($"{value} is less than {ceiling}");

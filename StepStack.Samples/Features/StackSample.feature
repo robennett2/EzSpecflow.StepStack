@@ -9,6 +9,31 @@ Scenario: Fail as the stack is not retried
 	Then I throw if less than 3 without retry
 	
 @mytag
+Scenario: Fail as using the test retry policy
+	Given I am using the test retry policy
+	Given I have a number 0
+	Given I add 2 until 10
+	Given I subtract 4
+	Then I throw if less than 5 with stack retry
+	
+@mytag
+Scenario: Pass as it reverts to the default retry policy
+	Given I am using the test retry policy
+	Given I want to use the default retry policy
+	Given I have a number 0
+	Given I add 2 until 10
+	Given I subtract 4
+	Then I throw if less than 5 with stack retry
+	
+@mytag
+Scenario: Pass as it defaults to a known retry policy
+	Given I am using the unknown retry policy
+	Given I have a number 0
+	Given I add 2 until 10
+	Given I subtract 4
+	Then I throw if less than 5 with stack retry
+	
+@mytag
 Scenario: Pass as the step Given I add 2 until 10 is retried
 	Given I have a number 0
 	Given I add 2 until 10

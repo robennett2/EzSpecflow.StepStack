@@ -16,10 +16,10 @@ internal sealed class DefaultStepRunner : IStepRunner
     private readonly ILogger<DefaultStepRunner>? _logger;
     private readonly IRetryPolicyFactory _retryPolicyFactory;
 
-    public DefaultStepRunner(IObjectContainer objectContainer, IRetryPolicyFactory retryPolicyFactory)
+    public DefaultStepRunner(IObjectContainer objectContainer, IRetryPolicyFactoryResolver retryPolicyFactoryResolver)
     {
         _logger = objectContainer.ResolveAll<ILogger<DefaultStepRunner>>().FirstOrDefault();
-        _retryPolicyFactory = retryPolicyFactory;
+        _retryPolicyFactory = retryPolicyFactoryResolver.Resolve();
     }
     
     private ConcurrentQueue<IStep> _steps = new();

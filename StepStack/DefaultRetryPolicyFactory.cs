@@ -13,23 +13,23 @@ internal sealed class DefaultRetryPolicyFactory : IRetryPolicyFactory
         Policy
             .Handle<StepRetryNeededException>()
             .WaitAndRetryAsync(Backoff.DecorrelatedJitterBackoffV2(
-                medianFirstRetryDelay: TimeSpan.FromSeconds(1),
-                retryCount: 20,
+                medianFirstRetryDelay: TimeSpan.FromSeconds(5),
+                retryCount: 5,
                 fastFirst: true));
 
     public AsyncRetryPolicy BuildStackPolicy() =>
         Policy
             .Handle<StackRetryNeededException>()
             .WaitAndRetryAsync(Backoff.DecorrelatedJitterBackoffV2(
-                medianFirstRetryDelay: TimeSpan.FromSeconds(30),
-                retryCount: 50,
+                medianFirstRetryDelay: TimeSpan.FromSeconds(5),
+                retryCount: 5,
                 fastFirst: true));
 
     public AsyncRetryPolicy BuildFramePolicy() =>
         Policy
             .Handle<FrameRetryNeededException>()
             .WaitAndRetryAsync(Backoff.DecorrelatedJitterBackoffV2(
-                medianFirstRetryDelay: TimeSpan.FromMinutes(1),
-                retryCount: 50,
+                medianFirstRetryDelay: TimeSpan.FromSeconds(5),
+                retryCount: 5,
                 fastFirst: true));
 }
