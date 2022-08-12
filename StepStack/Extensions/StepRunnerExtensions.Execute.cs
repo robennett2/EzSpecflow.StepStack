@@ -1,47 +1,53 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using EzSpecflow.Abstractions;
 using EzSpecflow.Models;
 
 namespace EzSpecflow.Extensions;
 
-public static partial class StepRunnerExtensions
+public static partial class FrameExtensions
 {
     public static Task Execute(
-        this IStepRunner stepRunner,
+        this IFrame frame,
         string stepName,
-        Func<Task> step) =>
-        stepRunner.Execute(stepName,
+        Func<Task> step,
+        CancellationToken cancellationToken = default) =>
+        frame.Execute(stepName,
             RetryPolicy.None,
             null,
-            step);
+            step,
+            cancellationToken: cancellationToken);
 
     public static Task Execute(
-        this IStepRunner stepRunner,
+        this IFrame frame,
         string stepName,
         RetryPolicy retryPolicy,
-        Func<Task> step)
+        Func<Task> step,
+        CancellationToken cancellationToken = default)
     {
-        return stepRunner.Execute(stepName,
+        return frame.Execute(stepName,
             retryPolicy,
             null,
-            step);
+            step,
+            cancellationToken: cancellationToken);
     }
 
     public static async Task Execute(
-        this IStepRunner stepRunner,
+        this IFrame frame,
         string stepName,
         RetryPolicy retryPolicy,
         string? stepDescription,
-        Func<Task> step)
+        Func<Task> step,
+        CancellationToken cancellationToken = default)
     {
-        await stepRunner.Add(
+        await frame.Add(
             stepName,
             retryPolicy,
             stepDescription,
             step
         );
 
-        await stepRunner.Execute();
+        await frame.Execute(cancellationToken);
     }
 }

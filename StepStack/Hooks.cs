@@ -19,7 +19,7 @@ public sealed class Hooks
     public void BeforeScenario()
     {
         _objectContainer.RegisterTypeAs<RetryPolicyFactoryResolver, IRetryPolicyFactoryResolver>();
-        _objectContainer.RegisterStepRunner<DefaultStepRunner>();
+        _objectContainer.RegisterStepRunner<Frame>();
         _objectContainer.RegisterRetryPolicyFactory<DefaultRetryPolicyFactory>("default");
     }
 }

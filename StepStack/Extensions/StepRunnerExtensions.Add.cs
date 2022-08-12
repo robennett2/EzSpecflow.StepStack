@@ -5,34 +5,34 @@ using EzSpecflow.Models;
 
 namespace EzSpecflow.Extensions;
 
-public static partial class StepRunnerExtensions
+public static partial class FrameExtensions
 {
     public static Task Add(
-        this IStepRunner stepRunner,
+        this IFrame frame,
         string stepName,
         Func<Task> step) =>
-        stepRunner.Add(stepName,
+        frame.Add(stepName,
             RetryPolicy.None,
             null,
             step);
 
     public static Task Add(
-        this IStepRunner stepRunner,
+        this IFrame frame,
         string stepName,
         RetryPolicy retryPolicy,
         Func<Task> step) =>
-            stepRunner.Add(stepName,
+            frame.Add(stepName,
                 retryPolicy,
                 null,
                 step);
 
     public static async Task Add(
-        this IStepRunner stepRunner,
+        this IFrame frame,
         string stepName,
         RetryPolicy retryPolicy,
         string? stepDescription,
         Func<Task> step) => 
-            await stepRunner.Add(new SimpleStep(
+            await frame.Add(new Step(
                 stepName,
                 step,
                 retryPolicy,

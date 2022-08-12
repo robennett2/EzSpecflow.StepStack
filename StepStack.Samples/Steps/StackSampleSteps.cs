@@ -13,12 +13,12 @@ public sealed class StackSampleSteps
     // For additional details on SpecFlow step definitions see https://go.specflow.org/doc-stepdef
 
     private readonly ScenarioContext _scenarioContext;
-    private readonly IStepRunner _stepRunner;
+    private readonly IFrame _frame;
 
-    public StackSampleSteps(ScenarioContext scenarioContext, IStepRunner stepRunner)
+    public StackSampleSteps(ScenarioContext scenarioContext, IFrame frame)
     {
         _scenarioContext = scenarioContext;
-        _stepRunner = stepRunner;
+        _frame = frame;
     }
 
     [Given(@"I have a number (\d+)")]
@@ -32,7 +32,7 @@ public sealed class StackSampleSteps
     [Given(@"I add (\d+)")]
     public async Task GivenIAdd(int toAdd)
     {
-        await _stepRunner.Add(
+        await _frame.Add(
             _scenarioContext.StepContext.StepInfo.Text,
             () => Task.Run(() =>
             {
@@ -44,7 +44,7 @@ public sealed class StackSampleSteps
     [Given(@"I add (\d+) until (\d+)")]
     public async Task GivenIAddUntil(int toAdd, int until)
     {
-        await _stepRunner.Add(
+        await _frame.Add(
             _scenarioContext.StepContext.StepInfo.Text,
             RetryPolicy.Step,
             () => Task.Run(() =>
@@ -62,7 +62,7 @@ public sealed class StackSampleSteps
     [Given(@"I subtract (\d+)")]
     public async Task GivenISubtract(int toSubtract)
     {
-        await _stepRunner.Add(
+        await _frame.Add(
             _scenarioContext.StepContext.StepInfo.Text,
             () => Task.Run(() =>
             {
@@ -74,7 +74,7 @@ public sealed class StackSampleSteps
     [Then(@"I throw if less than (\d+) without retry")]
     public async Task ThenIThrowIfLessThenWithoutRetry(int ceiling)
     {
-        await _stepRunner.Execute(
+        await _frame.Execute(
             _scenarioContext.StepContext.StepInfo.Text,
             () => Task.Run(() =>
             {
@@ -90,7 +90,7 @@ public sealed class StackSampleSteps
     [Then(@"I throw if less than (\d+) with stack retry")]
     public async Task ThenIThrowIfLessThenWithStackRetry(int ceiling)
     {
-        await _stepRunner.Execute(
+        await _frame.Execute(
             _scenarioContext.StepContext.StepInfo.Text,
             RetryPolicy.Stack,
             () => Task.Run(() =>

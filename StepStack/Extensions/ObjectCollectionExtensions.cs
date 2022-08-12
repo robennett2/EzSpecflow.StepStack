@@ -6,8 +6,8 @@ namespace EzSpecflow.Extensions;
 public static class ObjectCollectionExtensions
 {
     public static IStrategyRegistration RegisterStepRunner<TStepRunner>(this IObjectContainer objectContainer)
-        where TStepRunner : class, IStepRunner =>
-        objectContainer.RegisterTypeAs<TStepRunner, IStepRunner>();
+        where TStepRunner : class, IFrame =>
+        objectContainer.RegisterTypeAs<TStepRunner, IFrame>();
     
     public static IStrategyRegistration RegisterRetryPolicyFactory<TRetryPolicyFactory>(this IObjectContainer objectContainer, string name)
         where TRetryPolicyFactory : class, IRetryPolicyFactory =>

@@ -1,31 +1,32 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using EzSpecflow.Abstractions;
 using EzSpecflow.Models;
 
 namespace EzSpecflow;
 
-public class SimpleStep : IStep
+public class Step : IStep
 {
     private readonly Func<Task> _step;
 
-    public SimpleStep(
+    public Step(
         string stepName, 
         Func<Task> step, 
         RetryPolicy retryPolicy, 
         string? stepDescription = null)
     {
         _step = step;
-        StepName = stepName;
+        Name = stepName;
         RetryPolicy = retryPolicy;
-        StepDescription = stepDescription;
+        Description = stepDescription;
     }
 
     public int ExecutionCount { get; private set; }
     public RetryPolicy RetryPolicy { get; }
-    public string StepName { get; }
-    public string? StepDescription { get; }
-    public virtual async Task<StepResult> ExecuteStep()
+    public string Name { get; }
+    public string? Description { get; }
+    public virtual async Task<StepResult> Execute(CancellationToken cancellationToken = default)
     {
         ExecutionCount++;
         
