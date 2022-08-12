@@ -78,6 +78,7 @@ internal sealed class StepStack : IStepStack
                             {
                                 _logger?.LogError(result.Exception,
                                     result.Message);
+                                await Rewind();
                             }
                         }
                     }
@@ -89,5 +90,11 @@ internal sealed class StepStack : IStepStack
         }
 
         return new object();
+    }
+    
+    public Task Rewind()
+    {
+        _frames = new ConcurrentQueue<IFrame>(_executedFrames.ToList().Concat(_frames));
+        return Task.CompletedTask;
     }
 }
