@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BoDi;
 using EzSpecflow.Abstractions;
 using EzSpecflow.Exceptions;
+using EzSpecflow.Models;
 using Microsoft.Extensions.Logging;
 
 namespace EzSpecflow;
@@ -58,7 +60,8 @@ internal sealed class StepStack : IStepStack
     {
         ExecutionCount++;
         _executedFrames = new ConcurrentQueue<IFrame>();
-        
+
+        Debug.WriteLine($"Executing Stack {Name} - Execution {ExecutionCount}");
         try
         {
             await _retryPolicyFactory
@@ -69,16 +72,19 @@ internal sealed class StepStack : IStepStack
                     {
                         if (_frames.TryDequeue(out var frame))
                         {
-                            await frame.Rewind();
+                            Debug.WriteLine($"Dequeue Frame {frame.Name} Count {_frames.Count}");
+                            _executedFrames.Enqueue(frame);
+                            frame.Rewind();
                             
-                            var result = await frame.Execute(cancellationToken);
-                                    _executedFrames.Enqueue(frame);
+                            FrameResult result = await frame.Execute(cancellationToken);
 
                             if (result.Success is false)
                             {
+                                Debug.WriteLine($"Frame {frame.Name} failed");
                                 _logger?.LogError(result.Exception,
                                     result.Message);
-                                await Rewind();
+                                Rewind();
+                                throw new StackRetryNeededException(result.Exception);
                             }
                         }
                     }
@@ -92,9 +98,11 @@ internal sealed class StepStack : IStepStack
         return new object();
     }
     
-    public Task Rewind()
+    public void Rewind()
     {
+        Debug.WriteLine($"Rewind Stack: Executed {_executedFrames.Count} Pending {_frames.Count}");
         _frames = new ConcurrentQueue<IFrame>(_executedFrames.ToList().Concat(_frames));
-        return Task.CompletedTask;
+        _executedFrames.Clear();
+        Debug.WriteLine($"Rewound Stack: Executed {_executedFrames.Count} Pending {_frames.Count}");
     }
 }

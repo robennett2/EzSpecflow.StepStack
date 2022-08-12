@@ -57,4 +57,4 @@ Scenario: Pass as the stack is retried
 	Given I add 2
 	Given I multiply by 2
 	Given I subtract 1
-	Then I throw if less than 11 with frame retry
+	Then I throw if less than 11 with stack retry

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using EzSpecflow.Abstractions;
@@ -29,6 +30,7 @@ public class Step : IStep
     public virtual async Task<StepResult> Execute(CancellationToken cancellationToken = default)
     {
         ExecutionCount++;
+        Debug.WriteLine($"Executing Step {Name} - Execution {ExecutionCount}");
         
         try
         {

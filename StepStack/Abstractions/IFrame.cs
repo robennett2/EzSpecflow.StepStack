@@ -11,5 +11,5 @@ public interface IFrame : IExecutable<FrameResult>
     
     Task Add(IStep step);
 
-    public Task Rewind();
+    public void Rewind();
 }

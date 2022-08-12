@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -45,8 +46,10 @@ public class Frame : IFrame
     public virtual async Task<FrameResult> Execute(CancellationToken cancellationToken = default)
     {
         ExecutionCount++;
-        _executedSteps = new ConcurrentQueue<IStep>();
+        Debug.WriteLine($"Executing Frame {Name} - Execution {ExecutionCount}");
         
+        _executedSteps = new ConcurrentQueue<IStep>();
+
         try
         {
             await _retryPolicyFactory
@@ -57,15 +60,17 @@ public class Frame : IFrame
                     {
                         if (_steps.TryDequeue(out var step))
                         {
+                            Debug.WriteLine($"Dequeue Step {step.Name} Count {_steps.Count}");
                             await _retryPolicyFactory
                                 .BuildStepPolicy()
                                 .ExecuteAsync(async () =>
                                 {
-                                    var result = await step.Execute(cancellationToken);
                                     _executedSteps.Enqueue(step);
+                                    var result = await step.Execute(cancellationToken);
 
                                     if (result.Success is false)
                                     {
+                                        Debug.WriteLine($"Step {step.Name} failed");
                                         _logger?.LogError(result.Exception,
                                             result.Message);
 
@@ -76,25 +81,28 @@ public class Frame : IFrame
                     }
                 });
         }
-        catch (Exception ex) when (ex is not FrameRetryNeededException)
+        catch (StackRetryNeededException ex)
+        {
+            return new FrameResult(this, false, ExecutionCount, null, ex);
+        }
+        catch (Exception ex)
         {
             throw new FrameFailureException(ex.Message, ex);
         }
 
-        void HandleRetryPolicy(StepResult result)
+        FrameResult HandleRetryPolicy(StepResult result)
         {
+            Rewind();
             switch (result.Step.RetryPolicy)
             {
                 case RetryPolicy.None:
                     throw new StepFailureException(result.Message, result.Exception);
                 case RetryPolicy.Step:
                     throw new StepRetryNeededException(result.Exception);
-                case RetryPolicy.Stack:
-                    Rewind();
-                    throw new StackRetryNeededException(result.Exception);
                 case RetryPolicy.Frame:
-                    Rewind();
                     throw new FrameRetryNeededException(result.Exception);
+                case RetryPolicy.Stack:
+                    throw new StackRetryNeededException(result.Exception);
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -106,9 +114,11 @@ public class Frame : IFrame
             ExecutionCount);
     }
 
-    public Task Rewind()
+    public void Rewind()
     {
+        Debug.WriteLine($"Rewind Stack: Executed {_executedSteps.Count} Pending {_steps.Count}");
         _steps = new ConcurrentQueue<IStep>(_executedSteps.ToList().Concat(_steps));
-        return Task.CompletedTask;
+        _executedSteps.Clear();
+        Debug.WriteLine($"Rewound Stack: Executed {_executedSteps.Count} Pending {_steps.Count}");
     }
 }
