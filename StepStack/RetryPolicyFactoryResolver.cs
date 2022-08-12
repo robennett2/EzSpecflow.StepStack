@@ -7,7 +7,7 @@ using EzSpecflow.Extensions;
 
 namespace EzSpecflow;
 
-internal class RetryPolicyFactoryResolver : IRetryPolicyFactoryResolver
+internal sealed class RetryPolicyFactoryResolver : IRetryPolicyFactoryResolver
 {
     private readonly IObjectContainer _objectContainer;
 
@@ -15,18 +15,20 @@ internal class RetryPolicyFactoryResolver : IRetryPolicyFactoryResolver
     {
         _objectContainer = objectContainer;
     }
-    public string? CurrentFactoryName { get; private set; }
+
+    public string CurrentFactoryName { get; private set; } = "default";
 
     public void UseDefault()
     {
-        CurrentFactoryName = null;
+        CurrentFactoryName = "default";
     }
 
-    public void Select(string? factoryName)
+    public void Select(string factoryName)
     {
-        if (factoryName is not null && _objectContainer.IsRegistered<IRetryPolicyFactory>(factoryName) is false)
+        if (_objectContainer.IsRegistered<IRetryPolicyFactory>(factoryName) is false)
         {
-            factoryName = null;
+            UseDefault();
+            return;
         }
         
         CurrentFactoryName = factoryName;
@@ -34,14 +36,8 @@ internal class RetryPolicyFactoryResolver : IRetryPolicyFactoryResolver
 
     public IRetryPolicyFactory Resolve()
     {
-        var resolvedFactory = CurrentFactoryName is null
-            ? _objectContainer.ResolveAll<IRetryPolicyFactory>().Select(x =>
-            {
-                Debug.WriteLine($"{x.GetType().FullName}");
-                return x;
-            }).ToList().First()
-            : _objectContainer.ResolveRetryPolicyFactory(CurrentFactoryName);
-        Debug.WriteLine($"Resolved Factory: {resolvedFactory.GetType().FullName}");
+        var resolvedFactory = _objectContainer.ResolveRetryPolicyFactory(CurrentFactoryName);
+        Debug.WriteLine($"Resolved Retry Policy Factory: {resolvedFactory.GetType().FullName}");
         return resolvedFactory;
     }
 }

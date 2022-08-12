@@ -2,8 +2,8 @@
 
 internal interface IRetryPolicyFactoryResolver
 {
-    string? CurrentFactoryName { get; }
+    string CurrentFactoryName { get; }
     void UseDefault();
-    void Select(string? factoryName);
+    void Select(string factoryName);
     IRetryPolicyFactory Resolve();
 }

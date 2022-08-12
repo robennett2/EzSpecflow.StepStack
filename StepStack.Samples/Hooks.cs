@@ -14,7 +14,7 @@ public sealed class Hooks
         _objectContainer = objectContainer;
     }
 
-    [BeforeScenario(Order = 2)]
+    [BeforeScenario(Order = 99)]
     public void BeforeScenario()
     {
         _objectContainer.RegisterRetryPolicyFactory<TestRetryPolicyFactory>("test");

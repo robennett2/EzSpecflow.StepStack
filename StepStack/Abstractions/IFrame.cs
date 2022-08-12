@@ -10,4 +10,6 @@ public interface IFrame : IExecutable<FrameResult>
     IReadOnlyList<IStep> Steps { get; }
     
     Task Add(IStep step);
+
+    public Task Rewind();
 }

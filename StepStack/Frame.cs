@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace EzSpecflow;
 
-internal sealed class Frame : IFrame
+public class Frame : IFrame
 {
     private readonly ILogger<Frame>? _logger;
     private readonly IRetryPolicyFactory _retryPolicyFactory;
@@ -42,13 +42,15 @@ internal sealed class Frame : IFrame
         return Task.CompletedTask;
     }
 
-    public async Task<FrameResult> Execute(CancellationToken cancellationToken = default)
+    public virtual async Task<FrameResult> Execute(CancellationToken cancellationToken = default)
     {
+        ExecutionCount++;
+        _executedSteps = new ConcurrentQueue<IStep>();
+        
         try
         {
-            ExecutionCount++;
             await _retryPolicyFactory
-                .BuildStackPolicy()
+                .BuildFramePolicy()
                 .ExecuteAsync(async () =>
                 {
                     while (cancellationToken.IsCancellationRequested is false && _steps.IsEmpty is false)
@@ -91,6 +93,7 @@ internal sealed class Frame : IFrame
                     Rewind();
                     throw new StackRetryNeededException(result.Exception);
                 case RetryPolicy.Frame:
+                    Rewind();
                     throw new FrameRetryNeededException(result.Exception);
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -103,8 +106,9 @@ internal sealed class Frame : IFrame
             ExecutionCount);
     }
 
-    private void Rewind()
+    public Task Rewind()
     {
         _steps = new ConcurrentQueue<IStep>(_executedSteps.ToList().Concat(_steps));
+        return Task.CompletedTask;
     }
 }
