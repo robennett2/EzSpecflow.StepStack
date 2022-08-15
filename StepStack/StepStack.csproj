@@ -13,6 +13,7 @@
         <PackageProjectUrl>https://github.com/robertbennett1998/EzSpecflow.StepStack</PackageProjectUrl>
         <RepositoryUrl>https://github.com/robertbennett1998/EzSpecflow.StepStack</RepositoryUrl>
         <PackageTags>http;cosmos:db;sql;specflow;steps;testing;aspnetcore;</PackageTags>
+        <IsPackable>true</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
