@@ -7,6 +7,12 @@
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <RootNamespace>EzSpecflow</RootNamespace>
         <AssemblyName>EzSpecflow.StepStack</AssemblyName>
+        <PackageId>EzSpecflow.StepStack</PackageId>
+        <Authors>Robert Bennett</Authors>
+        <Description>A library to quickly add retry policies to specflow steps.</Description>
+        <PackageProjectUrl>https://github.com/robertbennett1998/EzSpecflow.StepStack</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/robertbennett1998/EzSpecflow.StepStack</RepositoryUrl>
+        <PackageTags>http;cosmos:db;sql;specflow;steps;testing;aspnetcore;</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
