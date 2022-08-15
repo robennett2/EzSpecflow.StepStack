@@ -37,7 +37,7 @@ internal sealed class RetryPolicyFactoryResolver : IRetryPolicyFactoryResolver
     public IRetryPolicyFactory Resolve()
     {
         var resolvedFactory = _objectContainer.ResolveRetryPolicyFactory(CurrentFactoryName);
-        Debug.WriteLine($"Resolved Retry Policy Factory: {resolvedFactory.GetType().FullName}");
+        Console.WriteLine($"Resolved Retry Policy Factory: {resolvedFactory.GetType().FullName}");
         return resolvedFactory;
     }
 }

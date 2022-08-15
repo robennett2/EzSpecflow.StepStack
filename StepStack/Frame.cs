@@ -46,7 +46,7 @@ public class Frame : IFrame
     public virtual async Task<FrameResult> Execute(CancellationToken cancellationToken = default)
     {
         ExecutionCount++;
-        Debug.WriteLine($"Executing Frame {Name} - Execution {ExecutionCount}");
+        Console.WriteLine($"Executing Frame {Name} - Execution {ExecutionCount}");
         
         _executedSteps = new ConcurrentQueue<IStep>();
 
@@ -60,7 +60,7 @@ public class Frame : IFrame
                     {
                         if (_steps.TryDequeue(out var step))
                         {
-                            Debug.WriteLine($"Dequeue Step {step.Name} Count {_steps.Count}");
+                            Console.WriteLine($"Dequeue Step {step.Name} Count {_steps.Count}");
                             await _retryPolicyFactory
                                 .BuildStepPolicy()
                                 .ExecuteAsync(async () =>
@@ -70,7 +70,7 @@ public class Frame : IFrame
 
                                     if (result.Success is false)
                                     {
-                                        Debug.WriteLine($"Step {step.Name} failed");
+                                        Console.WriteLine($"Step {step.Name} failed");
                                         _logger?.LogError(result.Exception,
                                             result.Message);
 
@@ -116,9 +116,9 @@ public class Frame : IFrame
 
     public void Rewind()
     {
-        Debug.WriteLine($"Rewind Stack: Executed {_executedSteps.Count} Pending {_steps.Count}");
+        Console.WriteLine($"Rewind Stack: Executed {_executedSteps.Count} Pending {_steps.Count}");
         _steps = new ConcurrentQueue<IStep>(_executedSteps.ToList().Concat(_steps));
         _executedSteps.Clear();
-        Debug.WriteLine($"Rewound Stack: Executed {_executedSteps.Count} Pending {_steps.Count}");
+        Console.WriteLine($"Rewound Stack: Executed {_executedSteps.Count} Pending {_steps.Count}");
     }
 }

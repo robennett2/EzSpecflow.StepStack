@@ -30,7 +30,7 @@ public class Step : IStep
     public virtual async Task<StepResult> Execute(CancellationToken cancellationToken = default)
     {
         ExecutionCount++;
-        Debug.WriteLine($"Executing Step {Name} - Execution {ExecutionCount}");
+        Console.WriteLine($"Executing Step {Name} - Execution {ExecutionCount}");
         
         try
         {

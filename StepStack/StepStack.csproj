@@ -6,6 +6,7 @@
         <Nullable>enable</Nullable>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <RootNamespace>EzSpecflow</RootNamespace>
+        <AssemblyName>EzSpecflow.StepStack</AssemblyName>
     </PropertyGroup>
 
     <ItemGroup>

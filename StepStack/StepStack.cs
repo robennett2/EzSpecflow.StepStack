@@ -61,7 +61,7 @@ internal sealed class StepStack : IStepStack
         ExecutionCount++;
         _executedFrames = new ConcurrentQueue<IFrame>();
 
-        Debug.WriteLine($"Executing Stack {Name} - Execution {ExecutionCount}");
+        Console.WriteLine($"Executing Stack {Name} - Execution {ExecutionCount}");
         try
         {
             await _retryPolicyFactory
@@ -72,7 +72,7 @@ internal sealed class StepStack : IStepStack
                     {
                         if (_frames.TryDequeue(out var frame))
                         {
-                            Debug.WriteLine($"Dequeue Frame {frame.Name} Count {_frames.Count}");
+                            Console.WriteLine($"Dequeue Frame {frame.Name} Count {_frames.Count}");
                             _executedFrames.Enqueue(frame);
                             frame.Rewind();
                             
@@ -80,7 +80,7 @@ internal sealed class StepStack : IStepStack
 
                             if (result.Success is false)
                             {
-                                Debug.WriteLine($"Frame {frame.Name} failed");
+                                Console.WriteLine($"Frame {frame.Name} failed");
                                 _logger?.LogError(result.Exception,
                                     result.Message);
                                 Rewind();
@@ -100,9 +100,9 @@ internal sealed class StepStack : IStepStack
     
     public void Rewind()
     {
-        Debug.WriteLine($"Rewind Stack: Executed {_executedFrames.Count} Pending {_frames.Count}");
+        Console.WriteLine($"Rewind Stack: Executed {_executedFrames.Count} Pending {_frames.Count}");
         _frames = new ConcurrentQueue<IFrame>(_executedFrames.ToList().Concat(_frames));
         _executedFrames.Clear();
-        Debug.WriteLine($"Rewound Stack: Executed {_executedFrames.Count} Pending {_frames.Count}");
+        Console.WriteLine($"Rewound Stack: Executed {_executedFrames.Count} Pending {_frames.Count}");
     }
 }

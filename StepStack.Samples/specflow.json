@@ -1,5 +1,5 @@
 {
   "stepAssemblies": [
-    { "assembly": "StepStack" }
+    { "assembly": "EzSpecflow.StepStack" }
   ]
 } 
