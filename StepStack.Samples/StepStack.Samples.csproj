@@ -13,8 +13,8 @@
         <PackageReference Include="MSTest.TestAdapter" Version="2.2.8" />
         <PackageReference Include="MSTest.TestFramework" Version="2.2.8" />
         <PackageReference Include="coverlet.collector" Version="3.1.2" />
-        <PackageReference Include="SpecFlow" Version="4.0.16-beta" />
-        <PackageReference Include="SpecFlow.MsTest" Version="4.0.16-beta" />
+        <PackageReference Include="SpecFlow" Version="3.9.74" />
+        <PackageReference Include="SpecFlow.MsTest" Version="3.9.74" />
     </ItemGroup>
 
     <ItemGroup>
