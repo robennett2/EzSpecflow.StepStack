@@ -9,27 +9,12 @@ namespace EzSpecflow;
 
 internal sealed class DefaultRetryPolicyFactory : IRetryPolicyFactory
 {
-    public AsyncRetryPolicy BuildStepPolicy() =>
+    private AsyncRetryPolicy DefaultPolicy<TException>() where TException : Exception => 
         Policy
-            .Handle<StepRetryNeededException>()
-            .WaitAndRetryAsync(Backoff.DecorrelatedJitterBackoffV2(
-                medianFirstRetryDelay: TimeSpan.FromSeconds(5),
-                retryCount: 5,
-                fastFirst: true));
+            .Handle<TException>()
+            .WaitAndRetryAsync(5, retry => TimeSpan.FromSeconds(1 * (retry ^ 2)));
 
-    public AsyncRetryPolicy BuildStackPolicy() =>
-        Policy
-            .Handle<StackRetryNeededException>()
-            .WaitAndRetryAsync(Backoff.DecorrelatedJitterBackoffV2(
-                medianFirstRetryDelay: TimeSpan.FromSeconds(5),
-                retryCount: 5,
-                fastFirst: true));
-
-    public AsyncRetryPolicy BuildFramePolicy() =>
-        Policy
-            .Handle<FrameRetryNeededException>()
-            .WaitAndRetryAsync(Backoff.DecorrelatedJitterBackoffV2(
-                medianFirstRetryDelay: TimeSpan.FromSeconds(5),
-                retryCount: 5,
-                fastFirst: true));
+    public AsyncRetryPolicy BuildStepPolicy() => DefaultPolicy<StepRetryNeededException>();
+    public AsyncRetryPolicy BuildFramePolicy() => DefaultPolicy<FrameRetryNeededException>();
+    public AsyncRetryPolicy BuildStackPolicy() => DefaultPolicy<StackRetryNeededException>();
 }
