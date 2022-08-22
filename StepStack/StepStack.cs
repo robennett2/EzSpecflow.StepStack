@@ -20,6 +20,7 @@ internal sealed class StepStack : IStepStack
     private readonly IRetryPolicyFactory _retryPolicyFactory;
     private ConcurrentQueue<IFrame> _frames = new();
     private ConcurrentQueue<IFrame> _executedFrames = new();
+    private int _defaultFrameCount = 0;
 
     public StepStack(
         IRetryPolicyFactoryResolver retryPolicyFactoryResolver,
@@ -31,7 +32,7 @@ internal sealed class StepStack : IStepStack
         _objectContainer = objectContainer;
 
         NewFrame(
-            new Frame("default",
+            new Frame($"default {++_defaultFrameCount}",
                 _retryPolicyFactory,
                 objectContainer));
     }
@@ -88,6 +89,9 @@ internal sealed class StepStack : IStepStack
                             }
                         }
                     }
+                    
+                    Console.WriteLine("Stack successfully executed, switching to new default frame");
+                    NewFrame($"default {++_defaultFrameCount}");
                 });
         }
         catch (Exception ex)
