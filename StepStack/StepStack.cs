@@ -17,7 +17,7 @@ internal sealed class StepStack : IStepStack
 {
     private readonly IObjectContainer _objectContainer;
     private readonly ILogger<StepStack>? _logger;
-    private readonly IRetryPolicyFactory _retryPolicyFactory;
+    private readonly IRetryPolicyFactoryResolver _retryPolicyFactoryResolver;
     private ConcurrentQueue<IFrame> _frames = new();
     private ConcurrentQueue<IFrame> _executedFrames = new();
     private int _defaultFrameCount = 0;
@@ -28,12 +28,12 @@ internal sealed class StepStack : IStepStack
     {
         Name = "Step Stack";
         _logger = objectContainer.ResolveAll<ILogger<StepStack>>().FirstOrDefault();
-        _retryPolicyFactory = retryPolicyFactoryResolver.Resolve();
+        _retryPolicyFactoryResolver = retryPolicyFactoryResolver;
         _objectContainer = objectContainer;
 
         NewFrame(
             new Frame($"default {++_defaultFrameCount}",
-                _retryPolicyFactory,
+                _retryPolicyFactoryResolver.Resolve(),
                 objectContainer));
     }
 
@@ -53,7 +53,7 @@ internal sealed class StepStack : IStepStack
     {
         NewFrame(
             new Frame(name,
-                _retryPolicyFactory,
+                _retryPolicyFactoryResolver.Resolve(),
                 _objectContainer));
     }
 
@@ -65,7 +65,7 @@ internal sealed class StepStack : IStepStack
         Console.WriteLine($"Executing Stack {Name} - Execution {ExecutionCount}");
         try
         {
-            await _retryPolicyFactory
+            await _retryPolicyFactoryResolver.Resolve()
                 .BuildStackPolicy()
                 .ExecuteAsync(async () =>
                 {

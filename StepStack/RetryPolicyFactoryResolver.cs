@@ -9,6 +9,7 @@ namespace EzSpecflow;
 
 internal sealed class RetryPolicyFactoryResolver : IRetryPolicyFactoryResolver
 {
+    private string? _currencyFactoryName { get; set; }
     private readonly IObjectContainer _objectContainer;
 
     public RetryPolicyFactoryResolver(IObjectContainer objectContainer)
@@ -16,11 +17,24 @@ internal sealed class RetryPolicyFactoryResolver : IRetryPolicyFactoryResolver
         _objectContainer = objectContainer;
     }
 
-    public string CurrentFactoryName { get; private set; } = "default";
+
+    public string CurrentFactoryName
+    {
+        get
+        {
+            return _currencyFactoryName ?? DefaultFactoryName;
+        }
+        private set
+        {
+            _currencyFactoryName = value;
+        }
+    }
+
+    public string DefaultFactoryName { get; private set; } = "default";
 
     public void UseDefault()
     {
-        CurrentFactoryName = "default";
+        CurrentFactoryName = DefaultFactoryName;
     }
 
     public void Select(string factoryName)
@@ -28,6 +42,8 @@ internal sealed class RetryPolicyFactoryResolver : IRetryPolicyFactoryResolver
         if (_objectContainer.IsRegistered<IRetryPolicyFactory>(factoryName) is false)
         {
             UseDefault();
+            Console.WriteLine($"No policy factory with name {factoryName} found, using default {CurrentFactoryName}");
+
             return;
         }
         

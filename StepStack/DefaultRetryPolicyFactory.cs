@@ -2,7 +2,6 @@
 using EzSpecflow.Abstractions;
 using EzSpecflow.Exceptions;
 using Polly;
-using Polly.Contrib.WaitAndRetry;
 using Polly.Retry;
 
 namespace EzSpecflow;
