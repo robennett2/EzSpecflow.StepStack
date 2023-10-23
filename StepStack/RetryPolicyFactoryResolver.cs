@@ -15,7 +15,6 @@ internal sealed class RetryPolicyFactoryResolver : IRetryPolicyFactoryResolver
         _objectContainer = objectContainer;
     }
 
-
     public string CurrentFactoryName
     {
         get
