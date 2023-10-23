@@ -6,5 +6,4 @@ internal interface IRetryPolicyFactoryResolver
         void UseDefault();
         void Select(string factoryName);
         IRetryPolicyFactory Resolve();
-        void SetDefaultFactoryName(string defaultFactoryName);
 }
