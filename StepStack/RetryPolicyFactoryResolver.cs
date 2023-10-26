@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Linq;
 using BoDi;
 using EzSpecflow.Abstractions;
 using EzSpecflow.Extensions;
@@ -16,7 +14,6 @@ internal sealed class RetryPolicyFactoryResolver : IRetryPolicyFactoryResolver
     {
         _objectContainer = objectContainer;
     }
-
 
     public string CurrentFactoryName
     {
@@ -46,7 +43,7 @@ internal sealed class RetryPolicyFactoryResolver : IRetryPolicyFactoryResolver
 
             return;
         }
-        
+
         CurrentFactoryName = factoryName;
     }
 
@@ -55,5 +52,10 @@ internal sealed class RetryPolicyFactoryResolver : IRetryPolicyFactoryResolver
         var resolvedFactory = _objectContainer.ResolveRetryPolicyFactory(CurrentFactoryName);
         Console.WriteLine($"Resolved Retry Policy Factory: {resolvedFactory.GetType().FullName}");
         return resolvedFactory;
+    }
+
+    public void SetDefaultFactoryName(string defaultFactoryName)
+    {
+        DefaultFactoryName = defaultFactoryName;
     }
 }
